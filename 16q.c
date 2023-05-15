@@ -1,0 +1,86 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+
+#define ALPHABET_SIZE 26
+
+int main() {
+    char ciphertext[1000];
+    printf("Enter the ciphertext:\n");
+    fgets(ciphertext, 1000, stdin);
+    int cipher_len = strlen(ciphertext);
+    
+    int freq[ALPHABET_SIZE] = {0};
+    for (int i = 0; i < cipher_len; i++) {
+        if (isalpha(ciphertext[i])) {
+            freq[tolower(ciphertext[i]) - 'a']++;
+        }
+    }
+    
+    char mapping[ALPHABET_SIZE];
+    char plaintext[1000];
+    for (int i = 0; i < ALPHABET_SIZE; i++) {
+        int max_index = 0;
+        for (int j = 0; j < ALPHABET_SIZE; j++) {
+            if (freq[j] > freq[max_index]) {
+                max_index = j;
+            }
+        }
+        mapping[max_index] = 'a' + i;
+        freq[max_index] = -1;
+    }
+
+    for (int i = 0; i < cipher_len; i++) {
+        if (isalpha(ciphertext[i])) {
+            plaintext[i] = mapping[tolower(ciphertext[i]) - 'a'];
+        } else {
+            plaintext[i] = ciphertext[i];
+        }
+    }
+
+    int num_scores = 3;
+    int scores[100] = {0};
+    char possible_plaintexts[100][1000];
+    for (int i = 0; i < cipher_len; i++) {
+        if (isalpha(plaintext[i])) {
+            int score = 0;
+            for (int j = 0; j < cipher_len; j++) {
+                if (isalpha(plaintext[j])) {
+                    if (tolower(plaintext[j]) == 'e') {
+                        score++;
+                    }
+                    if (tolower(plaintext[j]) == 't') {
+                        score++;
+                    }
+                    if (tolower(plaintext[j]) == 'a') {
+                        score++;
+                    }
+                    if (tolower(plaintext[j]) == 'o') {
+                        score++;
+                    }
+                    if (tolower(plaintext[j]) == 'i') {
+                        score++;
+                    }
+                }
+            }
+            scores[num_scores] = score;
+            strcpy(possible_plaintexts[num_scores], plaintext);
+            num_scores++;
+        }
+    }
+
+
+    for (int i = 0; i < num_scores - 1; i++) {
+        for (int j = i + 1; j < num_scores; j++) {
+            if (scores[i] < scores[j]) {
+                int temp_score = scores[i];
+                scores[i] = scores[j];
+                scores[j] = temp_score;
+                char temp_plaintext[1000];
+                strcpy(temp_plaintext, possible_plaintexts[i]);
+                strcpy(possible_plaintexts[i], possible_plaintexts[j]);
+                strcpy(possible_plaintexts[j], temp_plaintext);
+            }
+        }
+    }
