@@ -1,0 +1,28 @@
+#include <stdio.h>
+
+int main() {
+    char plaintext[] = "MEETMEATTHEUSUALPLACEATTENRATHERTHANEIGHTOCLOCK";
+    int key[2][2]={{9,4},{5,7}};
+    int len = strlen(plaintext);
+    int num[len];
+    for (int i = 0; i < len; i++) {
+        num[i] = plaintext[i] - 'A';
+    }
+    
+    if (len % 2 != 0) {
+        num[len] = 23;
+        len++;
+    }
+    
+    for (int i = 0; i < len; i += 2) {
+        int p1 = num[i];
+        int p2 = num[i+1];
+        
+        int c1 = (key[0][0]*p1 + key[0][1]*p2) % 26;
+        int c2 = (key[1][0]*p1 + key[1][1]*p2) % 26;
+        
+        printf("%c%c", c1+'A', c2+'A');
+    }
+    
+    return 0;
+}
