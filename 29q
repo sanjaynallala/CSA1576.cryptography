@@ -1,0 +1,57 @@
+#include <stdio.h>
+#include <stdint.h>
+
+#define STATE_SIZE 25
+#define LANE_SIZE 64
+#define CAPACITY_SIZE 512
+
+void printState(uint64_t state[STATE_SIZE][LANE_SIZE]) {
+    for (int i = 0; i < STATE_SIZE; i++) {
+        for (int j = 0; j < LANE_SIZE; j++) {
+            printf("%016llx ", state[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+int main() {
+    uint64_t state[STATE_SIZE][LANE_SIZE] = {0};
+    int iteration = 0;
+
+    for (int i = 0; i < STATE_SIZE; i++) {
+        for (int j = 0; j < CAPACITY_SIZE / LANE_SIZE; j++) {
+            state[i][j] = 0;
+        }
+    }
+
+    printf("Initial State:\n");
+    printState(state);
+    printf("\n");
+
+    int allNonZero = 0;
+    while (!allNonZero) {
+        allNonZero = 1;
+
+        for (int i = 0; i < STATE_SIZE; i++) {
+            for (int j = 0; j < CAPACITY_SIZE / LANE_SIZE; j++) {
+                if (state[i][j] == 0) {
+                    allNonZero = 0;
+                    break;
+                }
+            }
+            if (!allNonZero) {
+                break;
+            }
+        }
+
+       
+        iteration++;
+    }
+
+    printf("Final State:\n");
+    printState(state);
+
+    printf("\nNumber of iterations: %d\n", iteration);
+
+    return 0;
+}
