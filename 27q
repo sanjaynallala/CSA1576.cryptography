@@ -1,0 +1,59 @@
+#include <stdio.h>
+unsigned long long int modExp(unsigned long long int base, unsigned long long int exponent, unsigned long long int modulus) {
+    unsigned long long int result = 1;
+     while (exponent > 0) {
+        if (exponent % 2 == 1) {
+            result = (result * base) % modulus;
+        }
+
+        base = (base * base) % modulus;
+        exponent = exponent / 2;
+    }
+    return result;
+}
+
+int main() {
+    unsigned long long int p, q, e, n, phi_n, d, plaintext, ciphertext, decrypted;
+    p = 17;
+    q = 23;
+
+    n = p * q;
+    phi_n = (p - 1) * (q - 1);
+    e = 65537;
+    d = modExp(e, -1, phi_n);
+
+    printf("Enter the plaintext: ");
+    char plaintextStr[100];
+    scanf("%s", plaintextStr);
+
+    printf("Ciphertext: ");
+    for (int i = 0; plaintextStr[i] != '\0'; i++) {
+        
+        unsigned long long int num = plaintextStr[i] - 'A';
+
+      
+        ciphertext = modExp(num, e, n);
+
+        printf("%llu ", ciphertext);
+    }
+    printf("\n");
+
+    printf("Enter the ciphertext: ");
+    unsigned long long int ciphertextArr[100];
+    int numCount = 0;
+    while (scanf("%llu", &ciphertextArr[numCount]) == 1) {
+        numCount++;
+    }
+
+    printf("Decrypted plaintext: ");
+    for (int i = 0; i < numCount; i++) {
+        
+        decrypted = modExp(ciphertextArr[i], d, n);
+        char decryptedChar = decrypted + 'A';
+
+        printf("%c", decryptedChar);
+    }
+    printf("\n");
+
+    return 0;
+}
