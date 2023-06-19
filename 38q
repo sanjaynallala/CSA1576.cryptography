@@ -1,0 +1,22 @@
+#include<stdio.h>
+#include<string.h>
+
+int main () {
+    unsigned int a [3][3] = { { 6, 24, 1 }, { 13, 16, 10 }, { 20, 17, 15 } };
+    char s [100];
+    int i, j, k = 0;
+    printf ("Enter the plain text : ");
+    scanf ("%s", s);
+    for (i = 0; i < strlen (s); i += 3) {
+        unsigned int b [3] = { s [i] - 'a', s [i + 1] - 'a', s [i + 2] - 'a' };
+        unsigned int c [3] = { 0 };
+        for (j = 0; j < 3; j++) {
+            for (k = 0; k < 3; k++) {
+                c [j] += a [j][k] * b [k];
+            }
+            c [j] %= 26;
+        }
+        printf ("%c%c%c", c [0] + 'a', c [1] + 'a', c [2] + 'a');
+    }
+    return 0;
+}
