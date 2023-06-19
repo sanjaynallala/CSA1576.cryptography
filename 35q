@@ -1,0 +1,37 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+
+#define MAX_LEN 1000
+
+int main()
+{
+    char plain[MAX_LEN], cipher[MAX_LEN], key[MAX_LEN];
+    int i, j;
+
+    printf("Enter plaintext: ");
+    fgets(plain, MAX_LEN, stdin);
+
+    printf("Enter key: ");
+    fgets(key, MAX_LEN, stdin);
+
+    srand(time(NULL));
+
+    for (i = 0; i < strlen(plain); i++)
+    {
+        if (plain[i] == '\n')
+            break;
+
+        int shift = rand() % 26;
+        int key_shift = key[i] - '0';
+
+        cipher[i] = ((plain[i] - 'a' + shift + key_shift) % 26) + 'a';
+    }
+
+    cipher[i] = '\0';
+
+    printf("Ciphertext: %s\n", cipher);
+
+    return 0;
+}
