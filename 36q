@@ -1,0 +1,36 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_LEN 1000
+
+int main()
+{
+    char plain[MAX_LEN], cipher[MAX_LEN];
+    int i, j, a, b;
+
+    printf("Enter plaintext: ");
+    fgets(plain, MAX_LEN, stdin);
+
+    printf("Enter key (a b): ");
+    scanf("%d %d", &a, &b);
+
+    for (i = 0; i < strlen(plain); i++)
+    {
+        if (plain[i] == '\n')
+            break;
+
+        if (plain[i] >= 'a' && plain[i] <= 'z')
+            cipher[i] = ((a * (plain[i] - 'a') + b) % 26) + 'a';
+        else if (plain[i] >= 'A' && plain[i] <= 'Z')
+            cipher[i] = ((a * (plain[i] - 'A') + b) % 26) + 'A';
+        else
+            cipher[i] = plain[i];
+    }
+
+    cipher[i] = '\0';
+
+    printf("Ciphertext: %s\n", cipher);
+
+    return 0;
+}
